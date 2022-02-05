@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "dist/index.js",
 	"bin": {
-		"anx-cypress": "dist/index.js"
+		"anx-cypress": "bin/anx-cypress"
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
