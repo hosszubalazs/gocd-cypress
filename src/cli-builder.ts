@@ -1,6 +1,6 @@
 import yargs, { Arguments, Argv } from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import fs from 'node:fs';
+import fs from 'fs';
 import { CY_TESTS_BASE_PATH } from './commons';
 import { runHandler } from './runner';
 

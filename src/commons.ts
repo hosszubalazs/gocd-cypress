@@ -1,5 +1,5 @@
 import execa from 'execa';
-import path from 'node:path';
+import path from 'path';
 
 function env(envVarName: string, defaultValue: string) {
 	return process.env[envVarName] || defaultValue;

@@ -1,7 +1,7 @@
 import { Arguments } from 'yargs';
-import * as execa from 'execa';
-import path from 'node:path';
-import * as waitOn from 'wait-on';
+import execa from 'execa';
+import path from 'path';
+import waitOn from 'wait-on';
 import { ArgTypes } from './cli-builder';
 import {
 	cleanUpReports,
