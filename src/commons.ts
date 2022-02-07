@@ -1,15 +1,22 @@
 import execa from 'execa';
 import path from 'path';
 
-function env(envVarName: string, defaultValue: string) {
-	return process.env[envVarName] || defaultValue;
+const packageJson = () => require(path.resolve(process.cwd(), 'package.json'));
+
+export const anxCypressConfig = (): string => packageJson().anxCypress ?? {};
+export const projectName = (): string => packageJson().name;
+
+function config(envVarName: string, defaultValue: string) {
+	return process.env[envVarName] || anxCypressConfig()[envVarName] || defaultValue;
 }
 
-export const CY_PROJECT_PATH = env('CY_PROJECT_PATH', process.cwd());
-export const CY_REPORTS_PATH = env('CY_REPORTS_PATH', path.resolve(CY_PROJECT_PATH, './reports/cypress/reports'));
-export const CY_RESULTS_PATH = env('CY_RESULTS_PATH', path.resolve(CY_PROJECT_PATH, './reports/cypress/results'));
-export const CY_TESTS_BASE_PATH = env('CY_TESTS_BASE_PATH', path.resolve(CY_PROJECT_PATH, './cypress/test'));
-export const CY_DOCKER_IMAGE = env('CY_DOCKER_IMAGE', 'cypress/browsers:node16.13.0-chrome95-ff94');
+export const CY_PROJECT_PATH = config('CY_PROJECT_PATH', process.cwd());
+export const CY_REPORTS_PATH = config('CY_REPORTS_PATH', path.resolve(CY_PROJECT_PATH, './reports/cypress/reports'));
+export const CY_RESULTS_PATH = config('CY_RESULTS_PATH', path.resolve(CY_PROJECT_PATH, './reports/cypress/results'));
+export const CY_TESTS_BASE_PATH = config('CY_TESTS_BASE_PATH', path.resolve(CY_PROJECT_PATH, './cypress/test'));
+export const CY_DOCKER_IMAGE = config('CY_DOCKER_IMAGE', 'cypress/browsers:node16.13.0-chrome95-ff94');
+export const CY_BOOTSTRAP_COMMAND = config('CY_BOOTSTRAP_COMMAND', 'true');
+export const CY_SPEC_FILES_PATTERN = config('CY_SPEC_FILES_PATTERN', '**/*.spec.ts');
 
 export function exec(command: string, options?: execa.Options): execa.ExecaChildProcess {
 
@@ -21,10 +28,6 @@ export function exec(command: string, options?: execa.Options): execa.ExecaChild
 	});
 }
 
-const packageJson = () => require(path.resolve(CY_PROJECT_PATH, 'package.json'));
-
-export const createBootstrapCmd = (): string => packageJson().cyCli?.dockerBootstrapCmd ?? '';
-export const projectName = (): string => packageJson().name;
 
 export const cleanUpReports = async (testFolder: string): Promise<void> => {
 	await cleanUpFolder(`${CY_REPORTS_PATH}/${testFolder}`);

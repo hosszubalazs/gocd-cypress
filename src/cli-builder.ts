@@ -18,17 +18,18 @@ export function buildCli(): Argv {
 	return yargs(hideBin(process.argv))
 		.help()
 		.command({
-			command: '$0 <testFolder>',
+			command: '$0 [testFolder]',
 			describe: `Starts Cypress testing
 
 			Example
-				CI=true npm run cyCli -- uiAcceptance --serveCmd="npm start" --serveHost=http://localhost:3000
+				CI=true npx anx-cypress uiAcceptance --serveCmd="npm start" --serveHost=http://localhost:3000
 			`,
 			builder: (args: Argv<ArgTypes>) => {
 				return args
 					.positional('testFolder', {
 						describe: 'test types to run',
 						type: 'string',
+						default: ''
 					}).options({
 						docker: {
 							describe: 'Turns on docker mode. The task will run in cypress docker image',
@@ -66,9 +67,11 @@ function validateRun(args: Arguments<ArgTypes>) {
 		throw new Error('Either CYPRESS_BASE_URL environment variable or --serveCmd must be specified.');
 	}
 
-	const testFolderAbsolute = `${CY_TESTS_BASE_PATH}/${args.testFolder as string}`;
-	if (!fs.existsSync(testFolderAbsolute)) {
-		throw new Error(`specified test folder "${args.testFolder}" does not exists here: ${testFolderAbsolute}`);
+	if (args.testFolder) {
+		const testFolderAbsolute = `${CY_TESTS_BASE_PATH}/${args.testFolder as string}`;
+		if (!fs.existsSync(testFolderAbsolute)) {
+			throw new Error(`specified test folder "${args.testFolder}" does not exists here: ${testFolderAbsolute}`);
+		}
 	}
 
 }

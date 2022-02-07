@@ -10,6 +10,7 @@ import {
 	CY_REPORTS_PATH,
 	CY_RESULTS_PATH,
 	CY_TESTS_BASE_PATH,
+	CY_SPEC_FILES_PATTERN,
 	exec,
 } from './commons';
 import { dockerize } from './dockerize';
@@ -41,7 +42,7 @@ async function runCypress(testFolder: string, browser: string) {
 		await cleanUpResults(`/${testFolder}`);
 		await exec(['cypress run',
 			`--browser ${browser}`,
-			`--spec ${CY_TESTS_BASE_PATH}/${testFolder}/**/*.spec.ts`,
+			`--spec ${CY_TESTS_BASE_PATH}/${testFolder}/${CY_SPEC_FILES_PATTERN}`,
 			`--reporter-options configFile=${reporterConfPath}`,
 		].join(' '), {
 			env: {

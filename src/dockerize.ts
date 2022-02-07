@@ -2,7 +2,7 @@ import { Arguments } from 'yargs';
 import chalk from 'chalk';
 import execa from 'execa';
 import { ArgTypes } from './cli-builder';
-import { createBootstrapCmd, CY_DOCKER_IMAGE, CY_PROJECT_PATH, projectName } from './commons';
+import { CY_BOOTSTRAP_COMMAND, CY_DOCKER_IMAGE, CY_PROJECT_PATH, projectName } from './commons';
 
 // This is a eslint error:
 // eslint-disable-next-line no-unused-vars
@@ -17,8 +17,8 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 			console.log(chalk.inverse(`🐳 Docker mode: using ${CY_DOCKER_IMAGE}`));
 
 			const command = [
-				`npx`,
-				`anx-cpyress`,
+				`node`,
+				`./node_modules/anx-cypress/bin/anx-cypress.js`,
 				`${argv.testFolder}`,
 				`--serveCmd="${argv.serveCmd ?? ''}"`,
 				`--serveHost="${argv.serveHost ?? ''}"`,
@@ -30,7 +30,7 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 			const { stdout: userId } = await execa('id', ['-u']);
 			const { stdout: groupId } = await execa('id', ['-g']);
 			const HOME = process.env.HOME;
-			const bootstrapping = createBootstrapCmd();
+			const bootstrapping = CY_BOOTSTRAP_COMMAND;
 			const containerName = `cypress-runner-${projectName()}`;
 
 			console.log(`Use bootstrap command: ${bootstrapping}`);
