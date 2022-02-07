@@ -2,7 +2,7 @@ import { Arguments } from 'yargs';
 import chalk from 'chalk';
 import execa from 'execa';
 import { ArgTypes } from './cli-builder';
-import { createBootstrapCmd, CY_DOCKER_IMAGE, CY_PROJECT_PATH, findTsNodeInstance, projectName } from './commons';
+import { createBootstrapCmd, CY_DOCKER_IMAGE, CY_PROJECT_PATH, projectName } from './commons';
 
 // This is a eslint error:
 // eslint-disable-next-line no-unused-vars
@@ -12,22 +12,13 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 
 	return async (argv: Arguments<ArgTypes>) => {
 
-		const tsNodeInstance = findTsNodeInstance();
-
 		if (argv.docker) {
 
 			console.log(chalk.inverse(`🐳 Docker mode: using ${CY_DOCKER_IMAGE}`));
 
-			// yargs creates this $0
-			const scriptPath = argv.$0;
-
-			// tsNodeInstance.configFilePath would give an absolute path, that does not work in Docker
-			const tsConfigPath = tsNodeInstance.options.project;
-
 			const command = [
-				`npx ts-node`,
-				`-P ${tsConfigPath}`,
-				scriptPath,
+				`npx`,
+				`anx-cpyress`,
 				`${argv.testFolder}`,
 				`--serveCmd="${argv.serveCmd ?? ''}"`,
 				`--serveHost="${argv.serveHost ?? ''}"`,

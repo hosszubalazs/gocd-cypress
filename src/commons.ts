@@ -37,11 +37,3 @@ export const cleanUpResults = async (testFolder: string): Promise<void> => {
 export const cleanUpFolder = async (testFolder: string): Promise<void> => {
 	await exec(`rm -rf ${testFolder}`);
 };
-
-export function findTsNodeInstance(): { options: { project: string; } } {
-	// way to get ts-node instance: https://github.com/TypeStrong/ts-node/issues/846#issuecomment-631828160
-	const tsNodeRegisterSym = Symbol.for('ts-node.register.instance');
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	return (process as any)[tsNodeRegisterSym];
-}
