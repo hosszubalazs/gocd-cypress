@@ -8,7 +8,7 @@ Cypress runner that
 # Installation
 
 ```bash
-npm install -D github:adnovum/anx-cypress
+npm install -D github:adnovum/anx-cypress#v1.0.0
 ```
 
 # Execution
@@ -101,3 +101,9 @@ Optional command that is invoked in container mode, before testing
 *default:* `'**/*.spec.ts'`
 
 glob pattern to test files in testing folder
+
+# Contribution
+
+## Release
+
+After having stable version on master, one just need to create a new tag that will act as a version.
