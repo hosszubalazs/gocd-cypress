@@ -1,12 +1,14 @@
 import execa from 'execa';
 import path from 'path';
 
+const PROJECT_PACKAGE_JSON_PROPERTY = 'anxCypress';
+
 const packageJson = () => require(path.resolve(process.cwd(), 'package.json'));
 
-export const anxCypressConfig = (): string => packageJson().anxCypress ?? {};
+export const anxCypressConfig = (): Record<string, string> => packageJson()[PROJECT_PACKAGE_JSON_PROPERTY] ?? {};
 export const projectName = (): string => packageJson().name;
 
-function config(envVarName: string, defaultValue: string) {
+function config(envVarName: string, defaultValue: string): string {
 	return process.env[envVarName] || anxCypressConfig()[envVarName] || defaultValue;
 }
 
@@ -27,7 +29,6 @@ export function exec(command: string, options?: execa.Options): execa.ExecaChild
 		...options,
 	});
 }
-
 
 export const cleanUpReports = async (testFolder: string): Promise<void> => {
 	await cleanUpFolder(`${CY_REPORTS_PATH}/${testFolder}`);
