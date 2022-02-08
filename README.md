@@ -13,6 +13,19 @@ npm install -D github:adnovum/anx-cypress#v1.0.1
 
 # Execution
 
+## Easy way
+
+*package.json*
+```json
+{
+    "scripts": {
+        "test:e2eStandalone": "anx-cypress --serveCmd='npm start' --serveHost='http://localhost:4200'",
+        "test:e2e": "anx-cypress"
+    }
+}
+```
+
+## Help
 ```bash
 anx-cypress [testFolder]
 
