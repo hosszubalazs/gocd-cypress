@@ -16,6 +16,7 @@
 		"chalk": "^4.1.2",
 		"execa": "^5.1.1",
 		"marge": "^1.0.1",
+		"mochawesome": "^7.0.1",
 		"mochawesome-merge": "^4.2.1",
 		"mochawesome-report-generator": "^6.0.1",
 		"ts-node": "^10.4.0",
