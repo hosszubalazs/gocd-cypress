@@ -62,6 +62,9 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 				CY_DOCKER_IMAGE,
 				'-c', // bash command execution flag
 				[
+					// create group optionally
+					`groupadd -g ${groupId} testergroup || true`,
+
 					// create tester user
 					`useradd -s /bin/bash -d /e2e -u ${userId} -g ${groupId} tester`,
 
