@@ -7,7 +7,7 @@
 	},
 	"scripts": {
 		"lint": "eslint . --ext .js,.ts",
-		"pretest": "pushd demo && npm install && popd",
+		"pretest": "cd demo && npm install && cd ..",
 		"test": "ava"
 	},
 	"files": [
