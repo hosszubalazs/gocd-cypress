@@ -6,12 +6,13 @@ import { ArgTypes } from './cli-builder';
 import {
 	cleanUpReports,
 	cleanUpResults,
+	CY_INTEGRATION_FOLDER,
 	CY_PROJECT_PATH,
 	CY_REPORTS_PATH,
 	CY_RESULTS_PATH,
-	CY_TESTS_BASE_PATH,
 	CY_SPEC_FILES_PATTERN,
 	exec,
+	joinTestFolder,
 } from './commons';
 import { dockerize } from './dockerize';
 
@@ -39,10 +40,10 @@ const reporterConfPath = `${__dirname}/reporter.conf.js`;
 async function runCypress(testFolder: string, browser: string) {
 
 	try {
-		await cleanUpResults(`/${testFolder}`);
+		await cleanUpResults(testFolder);
 		await exec(['cypress run',
 			`--browser ${browser}`,
-			`--spec ${CY_TESTS_BASE_PATH}/${testFolder}/${CY_SPEC_FILES_PATTERN}`,
+			`--spec ${joinTestFolder(CY_INTEGRATION_FOLDER, testFolder)}/${CY_SPEC_FILES_PATTERN}`,
 			`--reporter cypress-multi-reporters`,
 			`--reporter-options configFile=${reporterConfPath}`,
 		].join(' '), {
@@ -57,9 +58,11 @@ async function runCypress(testFolder: string, browser: string) {
 		throw e;
 	}
 	finally {
-		await cleanUpReports(`/${testFolder}/*`);
-		await exec(`mochawesome-merge ${CY_RESULTS_PATH}/${testFolder}/*.json -o ${CY_REPORTS_PATH}/${testFolder}/index.json`);
-		await exec(`marge ${CY_REPORTS_PATH}/${testFolder}/index.json -o ${CY_REPORTS_PATH}/${testFolder}`);
+		await cleanUpReports(`${testFolder}/*`);
+		await exec(`mochawesome-merge ${joinTestFolder(CY_RESULTS_PATH, testFolder)}/*.json -o ${joinTestFolder(CY_REPORTS_PATH,
+			testFolder)}/index.json`);
+		await exec(
+			`marge ${joinTestFolder(CY_REPORTS_PATH, testFolder)}/index.json -o ${joinTestFolder(CY_REPORTS_PATH, testFolder)}`);
 	}
 }
 
