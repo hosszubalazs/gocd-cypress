@@ -8,7 +8,7 @@ Cypress runner that
 # Installation
 
 ```bash
-npm install -D github:adnovum/anx-cypress#v1.0.0
+npm install -D github:adnovum/anx-cypress#v1.0.1
 ```
 
 # Execution
