@@ -63,10 +63,6 @@ export function buildCli(): Argv {
 
 function validateRun(args: Arguments<ArgTypes>) {
 
-	if (!args.serveCmd && !process.env.CYPRESS_BASE_URL) {
-		throw new Error('Either CYPRESS_BASE_URL environment variable or --serveCmd must be specified.');
-	}
-
 	if (args.testFolder) {
 		const testFolderAbsolute = `${CY_TESTS_BASE_PATH}/${args.testFolder as string}`;
 		if (!fs.existsSync(testFolderAbsolute)) {

@@ -2,7 +2,6 @@
 	"name": "anx-cypress",
 	"version": "1.0.0",
 	"description": "",
-	"main": "dist/index.js",
 	"bin": {
 		"anx-cypress": "bin/anx-cypress"
 	},
@@ -11,6 +10,10 @@
 		"pretest": "pushd demo && npm install && popd",
 		"test": "ava"
 	},
+	"files": [
+		"bin",
+		"src"
+	],
 	"keywords": [],
 	"license": "MIT",
 	"dependencies": {
@@ -34,10 +37,14 @@
 		"eslint": "^8.8.0",
 		"typescript": "^4.5.5"
 	},
+	"peerDependencies": {
+		"cypress-multi-reporters": "^1.5.0"
+	},
 	"ava": {
 		"extensions": [
 			"ts"
 		],
+		"workerThreads": false,
 		"require": [
 			"ts-node/register/transpile-only"
 		]

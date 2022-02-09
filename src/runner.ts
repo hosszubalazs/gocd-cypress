@@ -43,12 +43,18 @@ async function runCypress(testFolder: string, browser: string) {
 		await exec(['cypress run',
 			`--browser ${browser}`,
 			`--spec ${CY_TESTS_BASE_PATH}/${testFolder}/${CY_SPEC_FILES_PATTERN}`,
+			`--reporter cypress-multi-reporters`,
 			`--reporter-options configFile=${reporterConfPath}`,
 		].join(' '), {
+			preferLocal: true,
 			env: {
 				CY_TEST_FOLDER: path.resolve(CY_RESULTS_PATH, testFolder),
 			},
 		});
+	}
+	catch (e) {
+		console.error(e);
+		throw e;
 	}
 	finally {
 		await cleanUpReports(`/${testFolder}/*`);
