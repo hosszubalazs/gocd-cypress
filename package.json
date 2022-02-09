@@ -25,7 +25,8 @@
 		"mochawesome-report-generator": "^6.0.1",
 		"ts-node": "^10.4.0",
 		"wait-on": "^6.0.0",
-		"yargs": "^17.3.1"
+		"yargs": "^17.3.1",
+		"cypress-multi-reporters": "^1.5.0"
 	},
 	"devDependencies": {
 		"@ava/typescript": "^3.0.1",
@@ -36,9 +37,6 @@
 		"ava": "^4.0.1",
 		"eslint": "^8.8.0",
 		"typescript": "^4.5.5"
-	},
-	"peerDependencies": {
-		"cypress-multi-reporters": "^1.5.0"
 	},
 	"ava": {
 		"extensions": [
