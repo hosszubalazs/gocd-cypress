@@ -5,10 +5,14 @@ Cypress runner that
  - creates HTML reports
  - runs test in docker container
 
+# Prerequisites
+
+Cypress npm package is installed in project.
+
 # Installation
 
 ```bash
-npm install -D github:adnovum/anx-cypress#v1.0.1 cypress-multi-reporters
+npm install -D github:adnovum/anx-cypress#v1.1.0
 ```
 
 Note: cypress-multi-reporters is required because anx-cypress uses it through Cypress

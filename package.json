@@ -1,6 +1,6 @@
 {
 	"name": "anx-cypress",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "",
 	"bin": {
 		"anx-cypress": "bin/anx-cypress"
