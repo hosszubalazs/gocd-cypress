@@ -8,6 +8,7 @@
 	},
 	"scripts": {
 		"lint": "eslint . --ext .js,.ts",
+		"pretest": "pushd demo && npm install && popd",
 		"test": "ava"
 	},
 	"keywords": [],
