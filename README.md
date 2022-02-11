@@ -61,12 +61,12 @@ Options:
 # Configuration
 
 configuration keys can be defined
- - in package.json in `anxCypress` property
+ - in package.json in `gocdCypress` property
 ```json
 {
     "name": "my-project",
     "version": "0.0.0",
-    "anxCypress": {
+    "gocdCypress": {
         "CY_DOCKER_IMAGE": "cypress/browsers:node16.13.0-chrome95-ff94"
     }
 }
@@ -74,7 +74,7 @@ configuration keys can be defined
  - environment variable
 ```bash
 export CY_DOCKER_IMAGE=cypress/browsers:node16.13.0-chrome95-ff94
-npx anx-cypres e2e
+npx gocd-cypress e2e
 ```
 
 ## Configuration keys
