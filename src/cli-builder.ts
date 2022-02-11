@@ -22,7 +22,7 @@ export function buildCli(): Argv {
 			describe: `Starts Cypress testing
 
 			Example
-				CI=true npx anx-cypress uiAcceptance --serveCmd="npm start" --serveHost=http://localhost:3000
+				CI=true npx gocd-cypress uiAcceptance --serveCmd="npm start" --serveHost=http://localhost:3000
 			`,
 			builder: (args: Argv<ArgTypes>) => {
 				return args

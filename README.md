@@ -1,5 +1,5 @@
 
-# anx-cypress
+# gocd-cypress
 
 Cypress runner that
  - creates HTML reports
@@ -12,10 +12,10 @@ Cypress npm package is installed in project.
 # Installation
 
 ```bash
-npm install -D github:adnovum/anx-cypress#v1.1.0
+npm install -D github:adnovum/gocd-cypress#v1.1.0
 ```
 
-Note: cypress-multi-reporters is required because anx-cypress uses it through Cypress
+Note: cypress-multi-reporters is required because gocd-cypress uses it through Cypress
 
 # Execution
 
@@ -25,20 +25,20 @@ Note: cypress-multi-reporters is required because anx-cypress uses it through Cy
 ```json
 {
     "scripts": {
-        "test:e2eStandalone": "anx-cypress --serveCmd='npm start' --serveHost='http://localhost:4200'",
-        "test:e2e": "anx-cypress"
+        "test:e2eStandalone": "gocd-cypress --serveCmd='npm start' --serveHost='http://localhost:4200'",
+        "test:e2e": "gocd-cypress"
     }
 }
 ```
 
 ## Help
 ```bash
-anx-cypress [testFolder]
+gocd-cypress [testFolder]
 
 Starts Cypress testing
 
 Example
-CI=true npx anx-cypress uiAcceptance --serveCmd="npm start"
+CI=true npx gocd-cypress uiAcceptance --serveCmd="npm start"
 --serveHost=http://localhost:3000
 
 

@@ -22,7 +22,7 @@ test.beforeEach(() => {
 })
 
 test('cli - Default config runs default cypress settings', async t => {
-	await execa('anx-cypress', {
+	await execa('gocd-cypress', {
 		preferLocal: true,
 		stdio: 'inherit',
 	});

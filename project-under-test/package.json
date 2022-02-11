@@ -6,7 +6,7 @@
   "scripts": {
     "//": "linking package does not work properly - recursive linking",
     "postinstall": "npm install --no-save $(npm pack ../ | tail -1)",
-    "test": "anx-cypress"
+    "test": "gocd-cypress"
   },
   "keywords": [],
   "devDependencies": {

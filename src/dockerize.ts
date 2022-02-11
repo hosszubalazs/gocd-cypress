@@ -18,7 +18,7 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 
 			const command = [
 				`node`,
-				`./node_modules/anx-cypress/bin/anx-cypress.js`,
+				`./node_modules/gocd-cypress/bin/gocd-cypress.js`,
 				`${argv.testFolder}`,
 				`--serveCmd="${argv.serveCmd ?? ''}"`,
 				`--serveHost="${argv.serveHost ?? ''}"`,
