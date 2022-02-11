@@ -3,11 +3,11 @@ import path from 'path';
 import execa from 'execa';
 import fs from 'fs';
 
-const demoDir = path.resolve(__dirname, '../demo');
+const testProjectDir = path.resolve(__dirname, '../project-under-test');
 
 test.before(async (t) => {
-	t.log(`Change dir to ${demoDir}`)
-	process.chdir(demoDir);
+	t.log(`Change dir to ${testProjectDir}`)
+	process.chdir(testProjectDir);
 });
 
 test.beforeEach(() => {
@@ -18,7 +18,7 @@ test.beforeEach(() => {
 		}
 	}
 	delete process.env['CYPRESS_BASE_URL'];
-	fs.rmSync(path.resolve(__dirname, '../demo/reports'), { recursive: true, force: true });
+	fs.rmSync(path.resolve(testProjectDir, 'reports'), { recursive: true, force: true });
 })
 
 test('cli - Default config runs default cypress settings', async t => {
@@ -27,5 +27,6 @@ test('cli - Default config runs default cypress settings', async t => {
 		stdio: 'inherit',
 	});
 
-	t.true(fs.existsSync(path.resolve(__dirname, '../demo/reports/cypress/reports/index.html')), 'HTML report is generated');
+	const reportHtml = path.resolve(testProjectDir, 'reports/cypress/reports/index.html');
+	t.true(fs.existsSync(reportHtml), 'HTML report is generated');
 });
