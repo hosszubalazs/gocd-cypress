@@ -1,9 +1,9 @@
 {
-	"name": "anx-cypress",
+	"name": "gocd-cypress",
 	"version": "1.1.0",
 	"description": "",
 	"bin": {
-		"anx-cypress": "bin/anx-cypress"
+		"gocd-cypress": "bin/gocd-cypress"
 	},
 	"scripts": {
 		"lint": "eslint . --ext .js,.ts",

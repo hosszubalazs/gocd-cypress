@@ -1,4 +1,4 @@
 reports
 node_modules
 .npm
-anx-cypress*.tgz
+gocd-cypress*.tgz
