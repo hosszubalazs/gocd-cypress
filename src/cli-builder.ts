@@ -1,7 +1,7 @@
 import yargs, { Arguments, Argv } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import fs from 'fs';
-import { CY_TESTS_BASE_PATH } from './commons';
+import { CY_INTEGRATION_FOLDER, joinTestFolder } from './commons';
 import { runHandler } from './runner';
 
 export type ArgTypes = {
@@ -63,12 +63,8 @@ export function buildCli(): Argv {
 
 function validateRun(args: Arguments<ArgTypes>) {
 
-	if (!args.serveCmd && !process.env.CYPRESS_BASE_URL) {
-		throw new Error('Either CYPRESS_BASE_URL environment variable or --serveCmd must be specified.');
-	}
-
 	if (args.testFolder) {
-		const testFolderAbsolute = `${CY_TESTS_BASE_PATH}/${args.testFolder as string}`;
+		const testFolderAbsolute = joinTestFolder(CY_INTEGRATION_FOLDER, args.testFolder);
 		if (!fs.existsSync(testFolderAbsolute)) {
 			throw new Error(`specified test folder "${args.testFolder}" does not exists here: ${testFolderAbsolute}`);
 		}

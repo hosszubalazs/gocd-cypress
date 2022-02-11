@@ -2,7 +2,7 @@ import { Arguments } from 'yargs';
 import chalk from 'chalk';
 import execa from 'execa';
 import { ArgTypes } from './cli-builder';
-import { CY_BOOTSTRAP_COMMAND, CY_DOCKER_IMAGE, CY_PROJECT_PATH, projectName } from './commons';
+import { CY_BOOTSTRAP_COMMAND, CY_DOCKER_IMAGE, CY_PROJECT_PATH, findCypressEnvVars, projectName } from './commons';
 
 // This is a eslint error:
 // eslint-disable-next-line no-unused-vars
@@ -32,7 +32,9 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 			const HOME = process.env.HOME;
 			const bootstrapping = CY_BOOTSTRAP_COMMAND;
 			const containerName = `cypress-runner-${projectName()}`;
+			const cypressEnvVars = findCypressEnvVars().map(envVarDef => ['-e', envVarDef]).flat();
 
+			console.log(`Reuse cypress env vars: ${cypressEnvVars}`)
 			console.log(`Use bootstrap command: ${bootstrapping}`);
 
 			// handle Ctrl+C - remove docker container was started
@@ -52,14 +54,17 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 				'-v', `${CY_PROJECT_PATH}:/e2e`,
 				'-w', '/e2e',
 				'-e', 'HOME=/opt/cypress/home',
+				...cypressEnvVars,
 				'-e', 'CYPRESS_CACHE_FOLDER=/opt/cypress/cache',
-				'-e', `CYPRESS_BASE_URL=${process.env.CYPRESS_BASE_URL}`,
 				'-e', 'HTTP_PROXY', '-e', 'HTTPS_PROXY', '-e', 'NO_PROXY',
 				'--entrypoint=bash',
 				'-t',
 				CY_DOCKER_IMAGE,
-				'-c',
+				'-c', // bash command execution flag
 				[
+					// create group optionally
+					`groupadd -g ${groupId} testergroup || true`,
+
 					// create tester user
 					`useradd -s /bin/bash -d /e2e -u ${userId} -g ${groupId} tester`,
 

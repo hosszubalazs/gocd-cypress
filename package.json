@@ -1,15 +1,19 @@
 {
 	"name": "anx-cypress",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "",
-	"main": "dist/index.js",
 	"bin": {
 		"anx-cypress": "bin/anx-cypress"
 	},
 	"scripts": {
 		"lint": "eslint . --ext .js,.ts",
+		"pretest": "cd project-under-test && npm install && cd ..",
 		"test": "ava"
 	},
+	"files": [
+		"bin",
+		"src"
+	],
 	"keywords": [],
 	"license": "MIT",
 	"dependencies": {
@@ -21,7 +25,8 @@
 		"mochawesome-report-generator": "^6.0.1",
 		"ts-node": "^10.4.0",
 		"wait-on": "^6.0.0",
-		"yargs": "^17.3.1"
+		"yargs": "^17.3.1",
+		"cypress-multi-reporters": "^1.5.0"
 	},
 	"devDependencies": {
 		"@ava/typescript": "^3.0.1",
@@ -37,8 +42,10 @@
 		"extensions": [
 			"ts"
 		],
+		"workerThreads": false,
 		"require": [
 			"ts-node/register/transpile-only"
-		]
+		],
+		"timeout": "2m"
 	}
 }
