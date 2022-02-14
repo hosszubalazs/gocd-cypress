@@ -123,6 +123,10 @@ Optional command that is invoked in container mode, before testing
 
 glob pattern to test files in testing folder
 
+## CI/CD integration
+
+gocd-cyress recognizes `CI` environmnet variable. If its value is `1` or `true` then the tool will use docker mode automatically.
+
 # Contribution
 
 ## Release
