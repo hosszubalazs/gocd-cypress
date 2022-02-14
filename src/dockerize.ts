@@ -54,6 +54,7 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 				'-v', `${CY_PROJECT_PATH}:/e2e`,
 				'-w', '/e2e',
 				'-e', 'HOME=/opt/cypress/home',
+				'-e', 'NPM_CONFIG_PREFIX=/e2e',
 				...cypressEnvVars,
 				'-e', 'CYPRESS_CACHE_FOLDER=/opt/cypress/cache',
 				'-e', 'HTTP_PROXY', '-e', 'HTTPS_PROXY', '-e', 'NO_PROXY',
@@ -67,6 +68,8 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 
 					// create tester user
 					`useradd -s /bin/bash -d /e2e -u ${userId} -g ${groupId} tester`,
+
+					'export PATH="$PATH:$(npm bin -g)"',
 
 					// bootstrap project if it was defined
 					bootstrapping,
