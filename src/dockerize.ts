@@ -34,7 +34,6 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 			const containerName = `cypress-runner-${projectName()}`;
 			const cypressEnvVars = findCypressEnvVars().map(envVarDef => ['-e', envVarDef]).flat();
 
-			console.log(`Reuse cypress env vars: ${cypressEnvVars}`)
 			console.log(`Use bootstrap command: ${bootstrapping}`);
 
 			// handle Ctrl+C - remove docker container was started
