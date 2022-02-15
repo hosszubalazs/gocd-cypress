@@ -12,7 +12,7 @@ Cypress npm package is installed in project.
 # Installation
 
 ```bash
-npm install -D github:adnovum/gocd-cypress#v1.1.3
+npm install -D github:adnovum/gocd-cypress#v1.1.4
 ```
 
 Note: cypress-multi-reporters is required because gocd-cypress uses it through Cypress
