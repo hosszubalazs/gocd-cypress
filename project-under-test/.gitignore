@@ -1,4 +1,6 @@
-reports
-node_modules
-.npm
-gocd-cypress*.tgz
+/reports
+/node_modules
+/.npm
+/gocd-cypress*.tgz
+/cypress/videos
+/cypress/screenshots

@@ -1,32 +1,33 @@
-import test from 'ava';
 import path from 'path';
 import execa from 'execa';
 import fs from 'fs';
 
-const testProjectDir = path.resolve(__dirname, '../project-under-test');
+describe('cli', function () {
+	const testProjectDir = path.resolve(__dirname, '../project-under-test');
 
-test.before(async (t) => {
-	t.log(`Change dir to ${testProjectDir}`)
-	process.chdir(testProjectDir);
-});
+	beforeAll(() => {
+		console.log(`Change dir to ${testProjectDir}`)
+		process.chdir(testProjectDir);
 
-test.beforeEach(() => {
+		Object.keys(process.env)
+			.filter(envVar => envVar.startsWith('CY_'))
+			.forEach(envVar => delete process.env[envVar]);
 
-	for (const envVar in process.env) {
-		if (envVar.substring(0, 3) == 'CY_') {
-			delete process.env[envVar];
-		}
-	}
-	delete process.env['CYPRESS_BASE_URL'];
-	fs.rmSync(path.resolve(testProjectDir, 'reports'), { recursive: true, force: true });
-})
-
-test('cli - Default config runs default cypress settings', async t => {
-	await execa('gocd-cypress', {
-		preferLocal: true,
-		stdio: 'inherit',
+		delete process.env['CYPRESS_BASE_URL'];
 	});
 
-	const reportHtml = path.resolve(testProjectDir, 'reports/cypress/reports/index.html');
-	t.true(fs.existsSync(reportHtml), 'HTML report is generated');
+	beforeEach(() => {
+		fs.rmSync(path.resolve(testProjectDir, 'reports'), { recursive: true, force: true });
+	})
+
+	test('Default config runs default cypress settings', async () => {
+		const { all } = await execa('gocd-cypress', {
+			preferLocal: true,
+			all: true
+		});
+		console.log(all);
+
+		const reportHtml = path.resolve(testProjectDir, 'reports/cypress/reports/index.html');
+		expect(fs.existsSync(reportHtml)).toBeTruthy();
+	});
 });
