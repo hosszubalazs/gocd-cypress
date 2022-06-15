@@ -4,5 +4,5 @@ module.exports = {
 	testEnvironment: 'node',
 	testPathIgnorePatterns: ['/node_modules/', '/project-under-test/'],
 	testMatch: ['**/?(*.)+(spec).ts'],
-	testTimeout: 120000 // 2 mins
+	testTimeout: 300000 // 5 mins
 };

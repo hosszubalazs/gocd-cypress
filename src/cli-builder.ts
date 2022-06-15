@@ -1,15 +1,16 @@
-import yargs, { Arguments, Argv } from 'yargs';
+import yargs, { Argv } from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import fs from 'fs';
-import { CY_INTEGRATION_FOLDER, joinTestFolder } from './commons';
 import { runHandler } from './runner';
+
+export const DEFAULT_REPORTS_FOLDER = 'cypress/results';
 
 export type ArgTypes = {
 	docker?: boolean;
-	testFolder?: string;
+	cypressCommand?: string;
 	serveCmd?: string;
 	serveHost?: string;
-	browser?: string;
+	resultsFolder?: string;
+	reportsFolder?: string;
 };
 
 // Assemble CLI interface with yargs
@@ -18,56 +19,51 @@ export function buildCli(): Argv {
 	return yargs(hideBin(process.argv))
 		.help()
 		.command({
-			command: '$0 [testFolder]',
+			command: '$0',
 			describe: `Starts Cypress testing
 
 			Example
-				CI=true npx gocd-cypress uiAcceptance --serveCmd="npm start" --serveHost=http://localhost:3000
+				CI=true npx gocd-cypress --cypressCmd="cypress run" \\
+					--serveCmd="npm start" --serveHost=http://localhost:3000 \\
+					--resultsFolder="build/cypress/results" --reportsFolder="build/cypress/reports"
 			`,
 			builder: (args: Argv<ArgTypes>) => {
 				return args
-					.positional('testFolder', {
-						describe: 'test types to run',
-						type: 'string',
-						default: ''
-					}).options({
+					.options({
 						docker: {
 							describe: 'Turns on docker mode. The task will run in cypress docker image',
 							default: ['1', 'true'].includes('' + process.env.CI),
 							boolean: true,
+						},
+						cypressCmd: {
+							describe: 'Command to execute Cypress tests. Should support passing more parameters',
+							type: 'string',
+							default: 'cypress run'
 						},
 						serveCmd: {
 							describe: 'Serve command',
 							type: 'string',
 						},
 						serveHost: {
-							describe: 'URL to application that serveCmd starts',
+							describe: 'URL to application that serveCmd starts. Required if serveCmd is specified',
 							type: 'string',
 						},
-						browser: {
-							describe: 'Browser name to use. See: https://docs.cypress.io/guides/guides/launching-browsers',
+						resultsFolder: {
+							describe: 'Path to the folder to store intermediary test result files in',
 							type: 'string',
-							required: true,
-							default: 'firefox'
-						}
+							default: DEFAULT_REPORTS_FOLDER,
+						},
+						reportsFolder: {
+							describe: 'Path to the folder to create the HTML report in',
+							type: 'string',
+							default: DEFAULT_REPORTS_FOLDER,
+						},
 					})
 					.implies('serveCmd', 'serveHost');
 			},
 			handler: runHandler,
 		})
-		.middleware(validateRun)
 		.showHelpOnFail(false)
 		.demandCommand(1);
-
-}
-
-function validateRun(args: Arguments<ArgTypes>) {
-
-	if (args.testFolder) {
-		const testFolderAbsolute = joinTestFolder(CY_INTEGRATION_FOLDER, args.testFolder);
-		if (!fs.existsSync(testFolderAbsolute)) {
-			throw new Error(`specified test folder "${args.testFolder}" does not exists here: ${testFolderAbsolute}`);
-		}
-	}
 
 }

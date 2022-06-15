@@ -4,3 +4,9 @@
 /gocd-cypress*.tgz
 /cypress/videos
 /cypress/screenshots
+/cypress/results
+/cypress/reports
+/.cache
+/.config
+/.local
+/.mozilla
