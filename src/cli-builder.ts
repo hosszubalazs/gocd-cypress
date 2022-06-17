@@ -1,6 +1,7 @@
 import yargs, { Argv } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { runHandler } from './runner';
+import { isCI } from './commons';
 
 export const DEFAULT_REPORTS_FOLDER = 'cypress/results';
 
@@ -31,8 +32,8 @@ export function buildCli(): Argv {
 				return args
 					.options({
 						docker: {
-							describe: 'Turns on docker mode. The task will run in cypress docker image',
-							default: ['1', 'true'].includes('' + process.env.CI),
+							describe: 'Run Cypress in Docker. Defaults to true if a CI environment is detected',
+							default: isCI,
 							boolean: true,
 						},
 						cypressCmd: {

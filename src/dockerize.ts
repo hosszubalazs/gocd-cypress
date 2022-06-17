@@ -2,7 +2,7 @@ import { Arguments } from 'yargs';
 import chalk from 'chalk';
 import execa from 'execa';
 import { ArgTypes } from './cli-builder';
-import { CY_BOOTSTRAP_COMMAND, CY_DOCKER_IMAGE, CY_PROJECT_PATH, findCypressEnvVars, projectName } from './commons';
+import { CY_BOOTSTRAP_COMMAND, CY_DOCKER_IMAGE, CY_PROJECT_PATH, exec, findCypressEnvVars, isCI, projectName } from './commons';
 import { hideBin } from 'yargs/helpers';
 
 // This is a eslint error:
@@ -19,34 +19,26 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 
 			const command = [
 				'npx gocd-cypress',
-				...hideBin(process.argv).filter(arg => !arg.startsWith('--docker'))
+				...hideBin(process.argv).filter(arg => !arg.startsWith('--docker')),
+				'--docker=false',
 			].join(' ');
 
 			console.log(chalk.inverse(`Command: ${command}`));
 
-			const { stdout: userId } = await execa('id', ['-u'], {stderr: 'inherit'});
-			const { stdout: groupId } = await execa('id', ['-g'], {stderr: 'inherit'});
+			const { stdout: userId } = await exec('id -u', {stdout: 'pipe'});
+			const { stdout: groupId } = await exec('id -g', {stdout: 'pipe'});
 			const HOME = process.env.HOME;
-			const bootstrapCommand = CY_BOOTSTRAP_COMMAND;
 			const containerName = `cypress-runner-${projectName()}`;
 			const cypressEnvVars = findCypressEnvVars().map(envVarDef => ['-e', envVarDef]).flat();
 
-			console.log(chalk.inverse(`Bootstrap command: ${bootstrapCommand}`));
-
-			// handle Ctrl+C - remove docker container was started
-			process.once('SIGINT', function () {
-				console.log(`Killing container ${containerName}`);
-
-				execa.commandSync(`docker rm -f ${containerName}`);
-
-				console.log(`${containerName} killed`);
-			});
+			console.log(chalk.inverse(`Bootstrap command: ${CY_BOOTSTRAP_COMMAND}`));
 
 			await execa(`docker`, ['run',
 				'--name', containerName,
 				'--rm',
+				'--init',
 				'--user', `${userId}:${groupId}`,
-				'-t',
+				...(!isCI ? ['-t'] : []),
 				'-v', `${HOME}:/opt/cypress/home`,
 				'-v', `${HOME}/.cache/Cypress:/opt/cypress/cache`,
 				'-v', `${CY_PROJECT_PATH}:/e2e`,
@@ -56,12 +48,14 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 				...cypressEnvVars,
 				'-e', 'CYPRESS_CACHE_FOLDER=/opt/cypress/cache',
 				'-e', 'HTTP_PROXY', '-e', 'HTTPS_PROXY', '-e', 'NO_PROXY',
+				'-e', 'http_proxy', '-e', 'https_proxy', '-e', 'no_proxy',
+				...(isCI ? ['-e', 'CI'] : []),
 				'--entrypoint=bash',
 				CY_DOCKER_IMAGE,
 				'-c', // bash command execution flag
 				[
 					// bootstrap project if it was defined
-					bootstrapCommand,
+					CY_BOOTSTRAP_COMMAND,
 
 					// install cypress binary
 					`npx cypress install`,
@@ -69,10 +63,12 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 					// finally run command as tester user
 					command,
 
-				].filter(cmd => !!cmd).join(' && '), // join bash commands
+				].join(' && '), // join bash commands
 			], {
 				cwd: CY_PROJECT_PATH,
-				stdio: 'inherit',
+				stdin: 'ignore',
+				stdout: 'inherit',
+				stderr: 'inherit',
 			});
 
 		}

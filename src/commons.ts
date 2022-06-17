@@ -35,7 +35,9 @@ export function exec(command: string, options?: execa.Options): execa.ExecaChild
 
 	return execa.command(command, {
 		preferLocal: true,
-		stdio: 'inherit',
+		stdin: 'ignore',
+		stdout: 'inherit',
+		stderr: 'inherit',
 		cwd: CY_PROJECT_PATH,
 		...options,
 	});
@@ -49,3 +51,5 @@ export const findCypressEnvVars = (): string[] =>
 	Object.keys(process.env)
 		.filter(envVar => envVar.toUpperCase().startsWith('CYPRESS_'))
 		.map(envVar => `${envVar}=${process.env[envVar]}`);
+
+export const isCI = ['1', 'true'].includes('' + process.env.CI);

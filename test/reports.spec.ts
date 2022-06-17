@@ -77,7 +77,8 @@ describe('cli', function () {
 			...cypressArgs
 		], {
 			preferLocal: true,
-			all: true
+			all: true,
+			stdin: 'ignore'
 		});
 		console.log(all);
 	}
