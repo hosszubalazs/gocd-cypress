@@ -11,6 +11,9 @@ http.createServer()
 		res.writeHead(200);
 		res.end(html);
 	})
+	.on('error', function (e) {
+		console.error(e);
+	})
 	.listen(port, host, () => {
 		console.log(`Fake development web server is running on http://${host}:${port} ...`);
 	});

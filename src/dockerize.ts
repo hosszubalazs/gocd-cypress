@@ -25,8 +25,8 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 
 			console.log(chalk.inverse(`Command: ${command}`));
 
-			const { stdout: userId } = await exec('id -u', {stdout: 'pipe'});
-			const { stdout: groupId } = await exec('id -g', {stdout: 'pipe'});
+			const { stdout: userId } = await exec('id -u', { stdout: 'pipe' });
+			const { stdout: groupId } = await exec('id -g', { stdout: 'pipe' });
 			const HOME = process.env.HOME;
 			const cypressEnvVars = findCypressEnvVars().map(envVarDef => ['-e', envVarDef]).flat();
 

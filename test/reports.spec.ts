@@ -53,6 +53,11 @@ describe('cli', function () {
 					res.writeHead(200);
 					res.end(html);
 				})
+				.on('error', function (e) {
+					console.error(e);
+					reject(e);
+					server.close();
+				})
 				.listen(port, host, async () => {
 					try {
 						await callback();
@@ -73,7 +78,7 @@ describe('cli', function () {
 
 		const { all } = await execa('gocd-cypress', [
 			`--docker=${dockerEnabled}`,
-			`--cypressCmd="npx cypress run --browser ${browser}"`,
+			`--cypressCmd="cypress run --browser ${browser}"`,
 			...cypressArgs
 		], {
 			preferLocal: true,
