@@ -28,25 +28,22 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 			const { stdout: userId } = await exec('id -u', {stdout: 'pipe'});
 			const { stdout: groupId } = await exec('id -g', {stdout: 'pipe'});
 			const HOME = process.env.HOME;
-			const containerName = `cypress-runner-${projectName()}`;
 			const cypressEnvVars = findCypressEnvVars().map(envVarDef => ['-e', envVarDef]).flat();
 
 			console.log(chalk.inverse(`Bootstrap command: ${CY_BOOTSTRAP_COMMAND}`));
 
 			await execa(`docker`, ['run',
-				'--name', containerName,
+				'--name', `cypress-runner-${projectName()}`,
 				'--rm',
 				'--init',
 				'--user', `${userId}:${groupId}`,
 				...(!isCI ? ['-t'] : []),
 				'-v', `${HOME}:/opt/cypress/home`,
-				'-v', `${HOME}/.cache/Cypress:/opt/cypress/cache`,
-				'-v', `${CY_PROJECT_PATH}:/e2e`,
-				'-w', '/e2e',
+				'-v', `${CY_PROJECT_PATH}:/workdir`,
+				'-w', '/workdir',
 				'-e', 'HOME=/opt/cypress/home',
-				'-e', 'NPM_CONFIG_PREFIX=/e2e',
+				'-e', 'NPM_CONFIG_PREFIX=/workdir',
 				...cypressEnvVars,
-				'-e', 'CYPRESS_CACHE_FOLDER=/opt/cypress/cache',
 				'-e', 'HTTP_PROXY', '-e', 'HTTPS_PROXY', '-e', 'NO_PROXY',
 				'-e', 'http_proxy', '-e', 'https_proxy', '-e', 'no_proxy',
 				...(isCI ? ['-e', 'CI'] : []),

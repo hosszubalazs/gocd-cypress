@@ -6,7 +6,3 @@
 /cypress/screenshots
 /cypress/results
 /cypress/reports
-/.cache
-/.config
-/.local
-/.mozilla
