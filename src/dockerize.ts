@@ -19,7 +19,9 @@ export function dockerize(realHandler: YargsHandler): YargsHandler {
 
 			const command = [
 				'npx gocd-cypress',
-				...hideBin(process.argv).filter(arg => !arg.startsWith('--docker')),
+				...hideBin(process.argv).filter(arg => !arg.startsWith('--docker'))
+					.map(arg => arg.replace(/"/g, '\\"'))
+					.map(arg => `"${arg}"`),
 				'--docker=false',
 			].join(' ');
 

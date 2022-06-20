@@ -7,7 +7,7 @@
     "//": "linking package does not work properly - recursive linking",
     "postinstall": "npm install --no-save $(npm pack ../ | tail -1)",
     "start": "node tools/fake-serve.js",
-    "test": "gocd-cypress"
+    "test": "gocd-cypress --serveCmd='npm start' --serveHost=http://localhost:4200"
   },
   "keywords": [],
   "devDependencies": {

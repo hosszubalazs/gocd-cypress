@@ -35,8 +35,16 @@ describe('cli', function () {
 
 	it('generates reports with dev web server and with docker', async () => {
 		await runCypress(WITH_DOCKER, [
-			'--serveCmd="npm start"',
+			'--serveCmd=npm start',
 			'--serveHost=http://localhost:4200']
+		);
+		expectHtmlReportExists();
+	});
+
+	it('escapes quotes', async () => {
+		await runCypress(WITH_DOCKER, [
+			'--serveCmd=`echo "npm" \'run\' "start"`',
+			'--serveHost="http://localhost:4200"']
 		);
 		expectHtmlReportExists();
 	});
@@ -78,7 +86,7 @@ describe('cli', function () {
 
 		const { all } = await execa('gocd-cypress', [
 			`--docker=${dockerEnabled}`,
-			`--cypressCmd="cypress run --browser ${browser}"`,
+			`--cypressCmd=cypress run --browser ${browser}`,
 			...cypressArgs
 		], {
 			preferLocal: true,

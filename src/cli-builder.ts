@@ -25,7 +25,7 @@ export function buildCli(): Argv {
 
 			Example
 				CI=true npx gocd-cypress --cypressCmd="cypress run" \\
-					--serveCmd="npm start" --serveHost=http://localhost:3000 \\
+					--serveCmd="npm start" --serveHost=http://localhost:4200 \\
 					--resultsFolder="build/cypress/results" --reportsFolder="build/cypress/reports"
 			`,
 			builder: (args: Argv<ArgTypes>) => {

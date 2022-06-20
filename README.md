@@ -26,7 +26,7 @@ Note: cypress-multi-reporters is required because gocd-cypress uses it through C
 {
     "scripts": {
         "test:e2e": "gocd-cypress",
-        "test:e2eStandalone": "gocd-cypress --serveCmd='npm start' --serveHost='http://localhost:4200'",
+        "test:e2eStandalone": "gocd-cypress --serveCmd='npm start' --serveHost=http://localhost:4200"
     }
 }
 ```
