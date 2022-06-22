@@ -15,8 +15,6 @@ Cypress npm package is installed in project.
 npm install -D github:adnovum/gocd-cypress#v1.1.4
 ```
 
-Note: cypress-multi-reporters is required because gocd-cypress uses it through Cypress
-
 # Execution
 
 ## Minimal example
@@ -80,7 +78,7 @@ Optional command that is invoked in container mode, before testing
 
 ## CI/CD integration
 
-gocd-cyress recognizes `CI` environmnet variable. If its value is `1` or `true` then the tool will use docker mode automatically.
+gocd-cyress recognizes `CI` environment variable. If its value is `1` or `true` then the tool will use docker mode automatically.
 
 # Contribution
 

@@ -37,7 +37,8 @@ export function buildCli(): Argv {
 							boolean: true,
 						},
 						cypressCmd: {
-							describe: 'Command to execute Cypress tests. Should support passing more parameters',
+							describe: 'Command to execute Cypress tests. Must support receiving more parameters that customize' +
+								' the reporter',
 							type: 'string',
 							default: 'cypress run'
 						},
