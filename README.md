@@ -12,7 +12,7 @@ Cypress npm package is installed in project.
 # Installation
 
 ```bash
-npm install -D github:adnovum/gocd-cypress#v1.1.4
+npm install -D github:adnovum/gocd-cypress#v2.0.0
 ```
 
 # Execution
