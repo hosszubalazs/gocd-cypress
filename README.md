@@ -39,42 +39,74 @@ npx gocd-cypress --help
 
 # Configuration
 
-Configuration keys can be defined
- - in `package.json` in `gocdCypress` property:
-   ```json
-   {
-       "name": "my-project",
-       "version": "0.0.0",
-       "gocdCypress": {
-           "CY_DOCKER_IMAGE": "cypress/browsers:node16.13.0-chrome95-ff94"
-       }
-   }
-   ```
- - via environment variable:
-   ```bash
-   export CY_DOCKER_IMAGE=cypress/browsers:node16.13.0-chrome95-ff94
-   npx gocd-cypress
-   ```
+This tool uses [Cosmiconfig](https://github.com/davidtheclark/cosmiconfig) for the configuration options, see its 
+documentation about where you can define your options. The module name we use with it is `gocdCypress`.
+
+Example in `package.json`:
+```json
+{
+    "name": "my-project",
+    "version": "0.0.0",
+    "gocdCypress": {
+        "cypressCmd": "cypress run --browser firefox",
+        "dockerImage": "cypress/browsers:node16.13.0-chrome95-ff94"
+    }
+}
+```
+
+We also support profiles that override non-profile-specific or default values, and they can be selected with command-line 
+option `--profile`:
+
+```json
+{
+    "gocdCypress": {
+        "cypressCmd": "cypress run --browser electron",
+        "profiles": {
+             "browserChrome": {
+                "cypressCmd": "cypress run --browser chrome"
+             },
+             "browserFirefox": {
+                "cypressCmd": "cypress run --browser firefox"
+             }
+        }
+    }
+}
+```
+
+Environment variables can override Cosmiconfig options. Each option is mapped to an environment variable with its name 
+converted to underscore case and prefixed with `CY_`. For example:
+
+```bash
+export CY_DOCKER_IMAGE=cypress/browsers:node16.13.0-chrome95-ff94
+export CY_CYPRESS_CMD='cypress run --browser firefox'
+npx gocd-cypress
+```
+
+Command-line options have the highest precedence over other means of configuration.
 
 ## Configuration keys
 
-### CY_PROJECT_PATH
+### Command-line options
+
+All command-line options are also available as Cosmiconfig options.
+
+### `projectPath`
 
 *default:* `process.cwd()`
 
-root path of project
+Root path of project.
 
-### CY_DOCKER_IMAGE
+### `dockerImage`
 
 *default:* `'cypress/browsers:node16.13.0-chrome95-ff94'`
 
-Docker image name that is used when testing is running in container mode.
+Docker image name and tag that is used when testing is run in container mode.
 
-### CY_BOOTSTRAP_COMMAND
+### `bootstrapCommand`
 
 *default:* `'true'`
 
-Optional command that is invoked in container mode, before testing
+Optional command that is invoked in container mode, before testing.
 
 ## CI/CD integration
 

@@ -36,17 +36,26 @@ describe('cli', function () {
 	it('generates reports with dev web server and with docker', async () => {
 		await runCypress(WITH_DOCKER, [
 			'--serveCmd=npm start',
-			'--serveHost=http://localhost:4200']
-		);
+			'--serveHost=http://localhost:4200',
+		]);
 		expectHtmlReportExists();
 	});
 
 	it('escapes quotes', async () => {
 		await runCypress(WITH_DOCKER, [
 			'--serveCmd=`echo "npm" \'run\' "start"`',
-			'--serveHost="http://localhost:4200"']
-		);
+			'--serveHost="http://localhost:4200"',
+		]);
 		expectHtmlReportExists();
+	});
+
+	it('can use a different profile', async () => {
+		const all = await runCypress(WITH_DOCKER, [
+			'--serveCmd=`echo "npm" \'run\' "start"`',
+			'--serveHost="http://localhost:4200"',
+			'--profile=testBootstrap',
+		]);
+		expect(all).toContain('This is a dummy bootstrap command');
 	});
 
 	const withMockDevWebServer = (callback: () => Promise<void>) => {
@@ -81,7 +90,7 @@ describe('cli', function () {
 		});
 	};
 
-	const runCypress = async (dockerEnabled: boolean, cypressArgs: string[] = []) => {
+	const runCypress = async (dockerEnabled: boolean, cypressArgs: string[] = []): Promise<string> => {
 		const browser = dockerEnabled ? 'chrome' : 'electron';
 
 		const { all } = await execa('gocd-cypress', [
@@ -94,6 +103,8 @@ describe('cli', function () {
 			stdin: 'ignore'
 		});
 		console.log(all);
+
+		return all ?? '';
 	}
 
 	const expectHtmlReportExists = () => {

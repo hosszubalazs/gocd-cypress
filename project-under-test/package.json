@@ -12,5 +12,13 @@
   "keywords": [],
   "devDependencies": {
     "cypress": "^9.4.1"
+  },
+  "gocdCypress": {
+    "CY_DOCKER_IMAGE": "cypress/browsers:node16.13.0-chrome95-ff94",
+    "profiles": {
+      "testBootstrap": {
+        "bootstrapCommand": "echo 'This is a dummy bootstrap command'"
+      }
+    }
   }
 }

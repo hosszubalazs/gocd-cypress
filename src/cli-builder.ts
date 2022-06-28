@@ -12,6 +12,7 @@ export type ArgTypes = {
 	serveHost?: string;
 	resultsFolder?: string;
 	reportsFolder?: string;
+	profile?: string;
 };
 
 // Assemble CLI interface with yargs
@@ -24,7 +25,7 @@ export function buildCli(): Argv {
 			describe: `Starts Cypress testing
 
 			Example
-				CI=true npx gocd-cypress --cypressCmd="cypress run" \\
+				CI=true npx gocd-cypress --cypressCmd="cypress run --browser chrome" \\
 					--serveCmd="npm start" --serveHost=http://localhost:4200 \\
 					--resultsFolder="build/cypress/results" --reportsFolder="build/cypress/reports"
 			`,
@@ -60,12 +61,15 @@ export function buildCli(): Argv {
 							type: 'string',
 							default: DEFAULT_REPORTS_FOLDER,
 						},
+						profile: {
+							describe: 'Configuration profile to use. Overrides configuration based on use case',
+							type: 'string',
+						}
 					})
 					.implies('serveCmd', 'serveHost');
 			},
 			handler: runHandler,
 		})
-		.showHelpOnFail(false)
-		.demandCommand(1);
+		.showHelpOnFail(false);
 
 }

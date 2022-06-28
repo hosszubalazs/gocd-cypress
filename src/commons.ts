@@ -1,20 +1,5 @@
 import execa from 'execa';
-import path from 'path';
-
-const PROJECT_PACKAGE_JSON_PROPERTY = 'gocdCypress';
-
-const packageJson = () => require(path.resolve(process.cwd(), 'package.json'));
-
-export const gocdCypressConfig = (): Record<string, string> => packageJson()[PROJECT_PACKAGE_JSON_PROPERTY] ?? {};
-export const projectName = (): string => packageJson().name;
-
-function config(envVarName: string, defaultValue: string): string {
-	return process.env[envVarName] || gocdCypressConfig()[envVarName] || defaultValue;
-}
-
-export const CY_PROJECT_PATH = config('CY_PROJECT_PATH', process.cwd());
-export const CY_DOCKER_IMAGE = config('CY_DOCKER_IMAGE', 'cypress/browsers:node16.13.0-chrome95-ff94');
-export const CY_BOOTSTRAP_COMMAND = config('CY_BOOTSTRAP_COMMAND', 'true');
+import { config } from './config';
 
 export function exec(command: string, options?: execa.Options): execa.ExecaChildProcess {
 
@@ -23,7 +8,7 @@ export function exec(command: string, options?: execa.Options): execa.ExecaChild
 		stdin: 'ignore',
 		stdout: 'inherit',
 		stderr: 'inherit',
-		cwd: CY_PROJECT_PATH,
+		cwd: config.projectPath,
 		...options,
 	});
 }

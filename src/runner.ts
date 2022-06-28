@@ -1,30 +1,30 @@
-import { Arguments } from 'yargs';
 import waitOn from 'wait-on';
-import { ArgTypes } from './cli-builder';
-import { cleanUpFolder, CY_PROJECT_PATH, exec, } from './commons';
+import { cleanUpFolder, exec, } from './commons';
 import { dockerize } from './dockerize';
 import path from 'path';
+import { config, loadConfig } from './config';
+import { ArgTypes } from './cli-builder';
+import { Arguments } from 'yargs';
 
-async function runCommand(argv: Arguments<ArgTypes>) {
-
-	if (argv.serveCmd) {
+async function runCommand() {
+	if (config.serveCmd) {
 		await runWithStartCommand(
-			argv.serveCmd,
-			argv.serveHost as string,
+			config.serveCmd,
+			config.serveHost as string,
 			async () => {
 				await runCypress(
-					argv.cypressCmd as string,
-					argv.resultsFolder as string,
-					argv.reportsFolder as string,
+					config.cypressCmd as string,
+					config.resultsFolder as string,
+					config.reportsFolder as string,
 				);
 			},
 		);
 	}
 	else {
 		await runCypress(
-			argv.cypressCmd as string,
-			argv.resultsFolder as string,
-			argv.reportsFolder as string,
+			config.cypressCmd as string,
+			config.resultsFolder as string,
+			config.reportsFolder as string,
 		);
 	}
 
@@ -32,8 +32,8 @@ async function runCommand(argv: Arguments<ArgTypes>) {
 
 async function runCypress(cypressCmd: string, resultsFolder: string, reportsFolder: string) {
 
-	const resultsFolderAbs = path.resolve(CY_PROJECT_PATH, resultsFolder);
-	const reportsFolderAbs = path.resolve(CY_PROJECT_PATH, reportsFolder);
+	const resultsFolderAbs = path.resolve(config.projectPath, resultsFolder);
+	const reportsFolderAbs = path.resolve(config.projectPath, reportsFolder);
 
 	try {
 		await cleanUpFolder(resultsFolderAbs);
@@ -84,4 +84,7 @@ const runWithStartCommand = async (serveCmd: string, serveHost: string, runCypre
 	}
 };
 
-export const runHandler = dockerize(runCommand);
+export const runHandler = (argv: Arguments<ArgTypes>) => {
+	loadConfig(argv);
+	dockerize(runCommand)();
+}
