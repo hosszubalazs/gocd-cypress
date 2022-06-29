@@ -6,7 +6,18 @@ import { config, loadConfig } from './config';
 import { ArgTypes } from './cli-builder';
 import { Arguments } from 'yargs';
 
-async function runCommand() {
+export const runHandler = (argv: Arguments<ArgTypes>) => {
+	loadConfig(argv);
+
+	if (config.docker) {
+		dockerize();
+	}
+	else {
+		runCommand();
+	}
+}
+
+export const runCommand: () => void = async () => {
 	if (config.serveCmd) {
 		await runWithStartCommand(
 			config.serveCmd,
@@ -83,8 +94,3 @@ const runWithStartCommand = async (serveCmd: string, serveHost: string, runCypre
 		process.exit(exitCode);
 	}
 };
-
-export const runHandler = (argv: Arguments<ArgTypes>) => {
-	loadConfig(argv);
-	dockerize(runCommand)();
-}
