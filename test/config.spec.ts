@@ -5,7 +5,13 @@ describe('config', function () {
 		expect(convertUnderscoreCaseToSnakeCase('MY_TEST_VARIABLE')).toEqual('myTestVariable');
 	});
 
-	it('converts converts env vars to config props', () => {
-		expect(convertCyEnvVarsToConfigProps({ 'CY_TEST_VARIABLE': 'my value' })).toEqual({ testVariable: 'my value' });
+	it('converts CY_ env vars to config props', () => {
+		expect(convertCyEnvVarsToConfigProps({
+			'CY_TEST_VARIABLE': 'my value',
+			HOME: 'this variable should not be converted',
+			CYPRESS_CMD: 'testing a wrongly named env var'
+		})).toEqual({
+			testVariable: 'my value'
+		});
 	});
 });

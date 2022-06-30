@@ -102,7 +102,7 @@ Root path of project.
 
 Docker image name and tag that is used when testing is run in container mode.
 
-### `bootstrapCommand`
+### `bootstrapCmd`
 
 *default:* `'true'`
 

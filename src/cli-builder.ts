@@ -1,13 +1,11 @@
 import yargs, { Argv } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { runHandler } from './runner';
-import { isCI } from './commons';
-
-export const DEFAULT_REPORTS_FOLDER = 'cypress/results';
+import { defaultConfig } from './config';
 
 export type ArgTypes = {
 	docker?: boolean;
-	cypressCommand?: string;
+	cypressCmd?: string;
 	serveCmd?: string;
 	serveHost?: string;
 	resultsFolder?: string;
@@ -16,9 +14,8 @@ export type ArgTypes = {
 };
 
 // Assemble CLI interface with yargs
-export function buildCli(): Argv {
-
-	return yargs(hideBin(process.argv))
+export const buildCli = (): Argv =>
+	yargs(hideBin(process.argv))
 		.help()
 		.command({
 			command: '$0',
@@ -33,15 +30,15 @@ export function buildCli(): Argv {
 				return args
 					.options({
 						docker: {
-							describe: 'Run Cypress in Docker. Defaults to true if a CI environment is detected',
-							default: isCI,
+							describe: withDefault('Run Cypress in Docker. Defaults to true if a CI environment is detected',
+								defaultConfig.docker as boolean),
 							boolean: true,
 						},
 						cypressCmd: {
-							describe: 'Command to execute Cypress tests. Must support receiving more parameters that customize' +
-								' the reporter',
+							describe: withDefault('Command to execute Cypress tests. Must support receiving more parameters' +
+								' that customize the reporter',
+								defaultConfig.cypressCmd as string),
 							type: 'string',
-							default: 'cypress run'
 						},
 						serveCmd: {
 							describe: 'Serve command',
@@ -52,14 +49,14 @@ export function buildCli(): Argv {
 							type: 'string',
 						},
 						resultsFolder: {
-							describe: 'Path to the folder to store intermediary test result files in',
+							describe: withDefault('Path to the folder to store intermediary test result files in',
+								defaultConfig.resultsFolder as string),
 							type: 'string',
-							default: DEFAULT_REPORTS_FOLDER,
 						},
 						reportsFolder: {
-							describe: 'Path to the folder to create the HTML report in',
+							describe: withDefault('Path to the folder to create the HTML report in',
+								defaultConfig.reportsFolder as string),
 							type: 'string',
-							default: DEFAULT_REPORTS_FOLDER,
 						},
 						profile: {
 							describe: 'Configuration profile to use. Overrides configuration based on use case',
@@ -72,4 +69,6 @@ export function buildCli(): Argv {
 		})
 		.showHelpOnFail(false);
 
-}
+// Can't define default values with yargs, as in our setup they would always override the Cosmiconfig configuration too.
+const withDefault = (description: string, defaultValue: string | boolean) =>
+	`${description} [default: ${defaultValue}]`;

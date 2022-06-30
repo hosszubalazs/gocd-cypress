@@ -1,15 +1,15 @@
 import path from 'path';
 import execa from 'execa';
 import fs from 'fs';
-import { DEFAULT_REPORTS_FOLDER } from '../src/cli-builder';
 import http from 'http';
+import { defaultConfig } from '../src/config';
 
 describe('cli', function () {
 	const WITH_DOCKER = true;
 	const NO_DOCKER = false;
 
 	const testProjectDir = path.resolve(__dirname, '../project-under-test');
-	const reportsDir = path.resolve(testProjectDir, DEFAULT_REPORTS_FOLDER);
+	const reportsDirInTestProj = path.resolve(testProjectDir, defaultConfig.reportsFolder as string);
 
 	beforeAll(() => {
 		console.log(`Change dir to ${testProjectDir}`)
@@ -23,14 +23,14 @@ describe('cli', function () {
 	});
 
 	beforeEach(() => {
-		fs.rmSync(reportsDir, { recursive: true, force: true });
+		fs.rmSync(reportsDirInTestProj, { recursive: true, force: true });
 	})
 
 	it('generates reports without dev web server and without docker', async () => {
 		await withMockDevWebServer(async () => {
 			await runCypress(NO_DOCKER);
-			expectHtmlReportExists();
 		});
+		expectHtmlReportExists();
 	});
 
 	it('generates reports with dev web server and with docker', async () => {
@@ -56,6 +56,17 @@ describe('cli', function () {
 			'--profile=testBootstrap',
 		]);
 		expect(all).toContain('This is a dummy bootstrap command');
+	});
+
+	it('can override yargs defaults', async () => {
+		const customReportsDir = path.join(reportsDirInTestProj, 'subdir');
+
+		await withMockDevWebServer(async () => {
+			await runCypress(NO_DOCKER, [
+				`--reportsFolder=${customReportsDir}`,
+			]);
+		});
+		expectHtmlReportExists(customReportsDir);
 	});
 
 	const withMockDevWebServer = (callback: () => Promise<void>) => {
@@ -107,7 +118,7 @@ describe('cli', function () {
 		return all ?? '';
 	}
 
-	const expectHtmlReportExists = () => {
+	const expectHtmlReportExists = (reportsDir = reportsDirInTestProj) => {
 		const reportHtml = path.resolve(reportsDir, `index.html`);
 		expect(fs.existsSync(reportHtml)).toBeTruthy();
 	};

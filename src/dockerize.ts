@@ -23,7 +23,7 @@ export const dockerize: () => void = async () => {
 	const HOME = process.env.HOME;
 	const cypressEnvVars = findCypressEnvVars().map(envVarDef => ['-e', envVarDef]).flat();
 
-	console.log(chalk.inverse(`Bootstrap command: ${config.bootstrapCommand}`));
+	console.log(chalk.inverse(`Bootstrap command: ${config.bootstrapCmd}`));
 
 	await execa(`docker`, ['run',
 		'--name', `cypress-runner-${loadProjectName()}`,
@@ -45,7 +45,7 @@ export const dockerize: () => void = async () => {
 		'-c', // bash command execution flag
 		[
 			// bootstrap project if it was defined
-			config.bootstrapCommand,
+			config.bootstrapCmd,
 
 			// install cypress binary
 			`npx cypress install`,
