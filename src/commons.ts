@@ -1,17 +1,17 @@
 import execa from 'execa';
-import { config } from './config';
 
-export function exec(command: string, options?: execa.Options): execa.ExecaChildProcess {
+export const DEFAULT_PROJECT_PATH = process.cwd();
+export const IS_CI = ['1', 'true'].includes('' + process.env.CI);
 
-	return execa.command(command, {
+export const exec = (command: string, options?: execa.Options): execa.ExecaChildProcess =>
+	execa.command(command, {
 		preferLocal: true,
 		stdin: 'ignore',
 		stdout: 'inherit',
 		stderr: 'inherit',
-		cwd: config.projectPath,
+		cwd: DEFAULT_PROJECT_PATH,
 		...options,
 	});
-}
 
 export const cleanUpFolder = async (folder: string): Promise<void> => {
 	await exec(`rm -rf ${folder}`);
@@ -21,5 +21,3 @@ export const findCypressEnvVars = (): string[] =>
 	Object.keys(process.env)
 		.filter(envVar => envVar.toUpperCase().startsWith('CYPRESS_'))
 		.map(envVar => `${envVar}=${process.env[envVar]}`);
-
-export const isCI = ['1', 'true'].includes('' + process.env.CI);

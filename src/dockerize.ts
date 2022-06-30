@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import execa from 'execa';
-import { exec, findCypressEnvVars, isCI } from './commons';
+import { exec, findCypressEnvVars, IS_CI } from './commons';
 import { hideBin } from 'yargs/helpers';
 import { config, loadProjectName } from './config';
 
@@ -30,7 +30,7 @@ export const dockerize: () => void = async () => {
 		'--rm',
 		'--init',
 		'--user', `${userId}:${groupId}`,
-		...(!isCI ? ['-t'] : []),
+		...(!IS_CI ? ['-t'] : []),
 		'-v', `${HOME}:/opt/cypress/home`,
 		'-v', `${config.projectPath}:/workdir`,
 		'-w', '/workdir',
@@ -39,7 +39,7 @@ export const dockerize: () => void = async () => {
 		...cypressEnvVars,
 		'-e', 'HTTP_PROXY', '-e', 'HTTPS_PROXY', '-e', 'NO_PROXY',
 		'-e', 'http_proxy', '-e', 'https_proxy', '-e', 'no_proxy',
-		...(isCI ? ['-e', 'CI'] : []),
+		...(IS_CI ? ['-e', 'CI'] : []),
 		'--entrypoint=bash',
 		config.dockerImage,
 		'-c', // bash command execution flag

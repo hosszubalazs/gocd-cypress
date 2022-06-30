@@ -2,7 +2,7 @@ import path from 'path';
 import { cosmiconfigSync } from 'cosmiconfig';
 import { Arguments } from 'yargs';
 import { ArgTypes } from './cli-builder';
-import { isCI } from './commons';
+import { DEFAULT_PROJECT_PATH, IS_CI } from './commons';
 
 export type Config = Arguments<ArgTypes> & {
 	projectPath: string,
@@ -11,10 +11,10 @@ export type Config = Arguments<ArgTypes> & {
 };
 
 export const defaultConfig: Partial<Config> = {
-	projectPath: process.cwd(),
+	projectPath: DEFAULT_PROJECT_PATH,
 	dockerImage: 'cypress/browsers:node16.13.0-chrome95-ff94',
 	bootstrapCmd: 'true',
-	docker: isCI,
+	docker: IS_CI,
 	cypressCmd: 'cypress run',
 	resultsFolder: 'cypress/results',
 	reportsFolder: 'cypress/reports',
