@@ -7,6 +7,10 @@ import { defaultConfig } from '../src/config';
 describe('cli', function () {
 	const WITH_DOCKER = true;
 	const NO_DOCKER = false;
+	const SERVE_ARGS = [
+		'--serveCmd=npm start',
+		'--serveHost=http://localhost:4200',
+	];
 
 	const testProjectDir = path.resolve(__dirname, '../project-under-test');
 	const reportsDirInTestProj = path.resolve(testProjectDir, defaultConfig.reportsFolder as string);
@@ -34,10 +38,7 @@ describe('cli', function () {
 	});
 
 	it('generates reports with dev web server and with docker', async () => {
-		await runCypress(WITH_DOCKER, [
-			'--serveCmd=npm start',
-			'--serveHost=http://localhost:4200',
-		]);
+		await runCypress(WITH_DOCKER, SERVE_ARGS);
 		expectHtmlReportExists();
 	});
 
@@ -51,8 +52,7 @@ describe('cli', function () {
 
 	it('can use a different profile', async () => {
 		const all = await runCypress(WITH_DOCKER, [
-			'--serveCmd=`echo "npm" \'run\' "start"`',
-			'--serveHost="http://localhost:4200"',
+			...SERVE_ARGS,
 			'--profile=testBootstrap',
 		]);
 		expect(all).toContain('This is a dummy bootstrap command');
@@ -67,6 +67,15 @@ describe('cli', function () {
 			]);
 		});
 		expectHtmlReportExists(customReportsDir);
+	});
+
+	it('can use custom docker run arguments', async () => {
+		const all = await runCypress(WITH_DOCKER, [
+			...SERVE_ARGS,
+			'--dockerRunArgs=-e', '--dockerRunArgs=TEST_VAR_1=myValue1',
+			'--bootstrapCmd=echo TEST_VAR_1 is: $TEST_VAR_1'
+		]);
+		expect(all).toContain('TEST_VAR_1 is: myValue1');
 	});
 
 	const withMockDevWebServer = (callback: () => Promise<void>) => {
@@ -101,13 +110,13 @@ describe('cli', function () {
 		});
 	};
 
-	const runCypress = async (dockerEnabled: boolean, cypressArgs: string[] = []): Promise<string> => {
+	const runCypress = async (dockerEnabled: boolean, gocdCypressArgs: string[] = []): Promise<string> => {
 		const browser = dockerEnabled ? 'chrome' : 'electron';
 
 		const { all } = await execa('gocd-cypress', [
 			`--docker=${dockerEnabled}`,
 			`--cypressCmd=cypress run --browser ${browser}`,
-			...cypressArgs
+			...gocdCypressArgs
 		], {
 			preferLocal: true,
 			all: true,

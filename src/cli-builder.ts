@@ -10,6 +10,7 @@ export type ArgTypes = {
 	serveHost?: string;
 	resultsFolder?: string;
 	reportsFolder?: string;
+	dockerRunArgs?: string[];
 	profile?: string;
 };
 
@@ -57,6 +58,12 @@ export const buildCli = (): Argv =>
 							describe: withDefault('Path to the folder to create the HTML report in',
 								defaultConfig.reportsFolder as string),
 							type: 'string',
+						},
+						dockerRunArgs: {
+							describe: 'Extra arguments for the "docker run" command when Docker is enabled. E.g.: ' +
+								'--dockerRunArgs=-e --dockerRunArgs=TEST_VAR=myValue',
+							type: 'string',
+							array: true,
 						},
 						profile: {
 							describe: 'Configuration profile to use. Overrides configuration based on use case',

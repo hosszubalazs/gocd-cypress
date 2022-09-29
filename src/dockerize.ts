@@ -10,7 +10,7 @@ export const dockerize: () => void = async () => {
 
 	const command = [
 		'npx gocd-cypress',
-		...hideBin(process.argv).filter(arg => !arg.startsWith('--docker'))
+		...hideBin(process.argv).filter(arg => !/^--docker(=|$)/.test(arg))
 			.map(arg => arg.replace(/"/g, '\\"'))
 			.map(arg => `"${arg}"`),
 		'--docker=false',
@@ -23,7 +23,12 @@ export const dockerize: () => void = async () => {
 	const HOME = process.env.HOME;
 	const cypressEnvVars = findCypressEnvVars().map(envVarDef => ['-e', envVarDef]).flat();
 
-	console.log(chalk.inverse(`Bootstrap command: ${config.bootstrapCmd}`));
+	if (config.bootstrapCmd) {
+		console.log(chalk.inverse(`Bootstrap command: ${config.bootstrapCmd}`));
+	}
+	if (config.dockerRunArgs) {
+		console.log(chalk.inverse(`Extra docker args: ${config.dockerRunArgs.join(' ')}`));
+	}
 
 	await execa(`docker`, ['run',
 		'--name', `cypress-runner-${loadProjectName()}`,
@@ -41,6 +46,7 @@ export const dockerize: () => void = async () => {
 		'-e', 'http_proxy', '-e', 'https_proxy', '-e', 'no_proxy',
 		...(IS_CI ? ['-e', 'CI'] : []),
 		'--entrypoint=bash',
+		...(config.dockerRunArgs ?? []),
 		config.dockerImage,
 		'-c', // bash command execution flag
 		[
