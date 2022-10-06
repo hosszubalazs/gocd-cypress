@@ -78,6 +78,28 @@ describe('cli', function () {
 		expect(all).toContain('TEST_VAR_1 is: myValue1');
 	});
 
+	it('propagates exit code without Docker', async () => {
+		await expect(async () => {
+			return await runCypress(NO_DOCKER, []);
+		}).rejects.toMatchObject({ failed: true });
+	});
+
+	it('propagates exit code with Docker and no dev web server', async () => {
+		await expect(async () => {
+			return await runCypress(WITH_DOCKER, []);
+		}).rejects.toMatchObject({ failed: true });
+	});
+
+	it('propagates exit code with Docker and dev web server', async () => {
+		await expect(async () => {
+			return await runCypress(WITH_DOCKER, [
+				...SERVE_ARGS,
+			], {
+				cypressArgs: '--spec non-existing.spec.ts'
+			});
+		}).rejects.toMatchObject({ failed: true });
+	});
+
 	const withMockDevWebServer = (callback: () => Promise<void>) => {
 		return new Promise<void>((resolve, reject) => {
 			const host = 'localhost';
@@ -110,12 +132,15 @@ describe('cli', function () {
 		});
 	};
 
-	const runCypress = async (dockerEnabled: boolean, gocdCypressArgs: string[] = []): Promise<string> => {
+	const runCypress = async (dockerEnabled: boolean, gocdCypressArgs: string[] = [],
+		options: { cypressArgs?: string } = {}
+	): Promise<string> => {
 		const browser = dockerEnabled ? 'chrome' : 'electron';
+		const cypressArgs = options.cypressArgs || ""
 
 		const { all } = await execa('gocd-cypress', [
 			`--docker=${dockerEnabled}`,
-			`--cypressCmd=cypress run --browser ${browser}`,
+			`--cypressCmd=cypress run --browser ${browser} ${cypressArgs}`,
 			...gocdCypressArgs
 		], {
 			preferLocal: true,

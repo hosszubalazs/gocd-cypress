@@ -4,7 +4,7 @@ import { exec, findCypressEnvVars, IS_CI } from './commons';
 import { hideBin } from 'yargs/helpers';
 import { config, loadProjectName } from './config';
 
-export const dockerize: () => void = async () => {
+export const dockerize = async (): Promise<void> => {
 
 	console.log(chalk.inverse(`🐳 Docker mode: using ${config.dockerImage}`));
 

@@ -6,18 +6,29 @@ import { config, loadConfig } from './config';
 import { ArgTypes } from './cli-builder';
 import { Arguments } from 'yargs';
 
-export const runHandler = (argv: Arguments<ArgTypes>) => {
-	loadConfig(argv);
+export const runHandler = async (argv: Arguments<ArgTypes>) => {
+	let exitCode = 0;
 
-	if (config.docker) {
-		dockerize();
+	try {
+		loadConfig(argv);
+
+		if (config.docker) {
+			await dockerize();
+		}
+		else {
+			await runCommand();
+		}
 	}
-	else {
-		runCommand();
+	catch (e) {
+		console.error(e);
+		exitCode = 1;
+	}
+	finally {
+		process.exit(exitCode);
 	}
 }
 
-export const runCommand: () => void = async () => {
+export const runCommand = async (): Promise<void> => {
 	if (config.serveCmd) {
 		await runWithStartCommand(
 			config.serveCmd,
@@ -38,11 +49,9 @@ export const runCommand: () => void = async () => {
 			config.reportsFolder as string,
 		);
 	}
-
 }
 
-async function runCypress(cypressCmd: string, resultsFolder: string, reportsFolder: string) {
-
+const runCypress = async (cypressCmd: string, resultsFolder: string, reportsFolder: string): Promise<void> => {
 	const resultsFolderAbs = path.resolve(config.projectPath, resultsFolder);
 	const reportsFolderAbs = path.resolve(config.projectPath, reportsFolder);
 
@@ -55,20 +64,13 @@ async function runCypress(cypressCmd: string, resultsFolder: string, reportsFold
 			`--reporter-options reportDir="${resultsFolderAbs}",overwrite=false,html=false,json=true`,
 		].join(' '));
 	}
-	catch (e) {
-		console.error(e);
-		throw e;
-	}
 	finally {
 		await exec(`mochawesome-merge ${resultsFolderAbs}/mochawesome*.json --output ${resultsFolderAbs}/all.json`);
 		await exec(`marge ${resultsFolderAbs}/all.json --reportDir ${reportsFolderAbs} --reportFilename index.html`);
 	}
-}
+};
 
 const runWithStartCommand = async (serveCmd: string, serveHost: string, runCypressCallback: () => void): Promise<void> => {
-
-	let exitCode = 0;
-
 	const serve = exec(serveCmd, {
 		env: {
 			BROWSER: 'none', // disable browser opening
@@ -86,11 +88,7 @@ const runWithStartCommand = async (serveCmd: string, serveHost: string, runCypre
 
 		await runCypressCallback();
 	}
-	catch (e) {
-		exitCode = 1;
-	}
 	finally {
 		serve.kill();
-		process.exit(exitCode);
 	}
 };
