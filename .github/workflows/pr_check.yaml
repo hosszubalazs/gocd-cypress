@@ -10,7 +10,7 @@ jobs:
     
     strategy:
       matrix:
-        cypress: [10.0.0, 11.0.0, 12.0.0]
+        cypress-version: [10.0.0, 11.0.0, 12.0.0]
 
     steps:
       - name: checkout
@@ -19,5 +19,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - run: npm install
+      - name: Install NPM dependencies for SUT
+        run: npm install
+      - name: Specify Cypress version based on testing strategy
+        run: npm install ${{ matrix.cypress-version }}
       - run: npm test
