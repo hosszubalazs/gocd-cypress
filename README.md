@@ -7,12 +7,13 @@ Cypress runner for GoCD that:
 
 # Prerequisites
 
-Cypress npm package is installed in project.
+This package supports Cypress starting from version 10.
+Multiple versions are verified with this plugin, see the Github workflow for details.
 
 # Installation
 
 ```bash
-npm install -D github:adnovum/gocd-cypress#v2.2.2
+npm install -D github:adnovum/gocd-cypress#v3.0.0
 ```
 
 # Execution
