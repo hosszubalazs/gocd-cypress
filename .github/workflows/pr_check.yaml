@@ -22,5 +22,5 @@ jobs:
       - name: Install NPM dependencies for SUT
         run: npm install
       - name: Specify Cypress version based on testing strategy
-        run: npm install ${{ matrix.cypress-version }}
+        run: npm install cypress@${{ matrix.cypress-version }}
       - run: npm test
