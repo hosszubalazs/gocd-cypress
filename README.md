@@ -12,8 +12,8 @@ Cypress npm package is installed in project. gocd-cypress is compatible with the
 
 | gocd-cypress | Cypress |
 |-----|----|
-| 3.0  | 10,11,12   |
-| 2.2.2 | <=5, >=10   |
+| 3.0   | <=9, >=12 |
+| 2.2.2 | <=5, >=10 |
 
 # Installation
 

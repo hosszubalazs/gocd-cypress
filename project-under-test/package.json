@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "devDependencies": {
-    "cypress": ">=10.0.0"
+    "cypress": ">=9.0.0"
   },
   "gocdCypress": {
     "dockerImage": "cypress/browsers:node16.14.2-slim-chrome103-ff102",
