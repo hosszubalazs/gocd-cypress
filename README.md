@@ -8,12 +8,14 @@ Cypress runner for GoCD that:
 
 # Prerequisites
 
-When using the gocd-cypress tool, it is important to ensure that you have the correct version of Cypress installed. This tool has been tested for compatibility with specific versions of Cypress, as detailed in the table below:
+Please make sure to install Cypress before using gocd-cypress.
+
+This tool has been tested for compatibility with the following ranges of Cypress versions:
 
 | gocd-cypress | Cypress |
 |-----|----|
-| 3.0   | <=9, >=12 |
-| 2.2.2 | <=5, >=10 |
+| 3.0   | 10–12 |
+| 2.2.2 | 5-10 |
 
 # Installation
 
