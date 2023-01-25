@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        cypress-version: [^9, ^10, ^11, ^12]
+        cypress-version: [^10, ^11, ^12]
 
     name: build (Cypress ${{ matrix.cypress-version }})
 

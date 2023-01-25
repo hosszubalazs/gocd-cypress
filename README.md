@@ -8,7 +8,7 @@ Cypress runner for GoCD that:
 
 # Prerequisites
 
-Cypress npm package is installed in project. gocd-cypress is compatible with the following major versions:
+When using the gocd-cypress tool, it is important to ensure that you have the correct version of Cypress installed. This tool has been tested for compatibility with specific versions of Cypress, as detailed in the table below:
 
 | gocd-cypress | Cypress |
 |-----|----|
