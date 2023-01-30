@@ -2,17 +2,25 @@
 # gocd-cypress
 
 Cypress runner for GoCD that:
+
 - runs test in docker container when a CI environment is detected
 - creates a merged HTML report
 
 # Prerequisites
 
-Cypress npm package is installed in project.
+Please make sure to install Cypress before using gocd-cypress.
+
+This tool has been tested for compatibility with the following ranges of Cypress versions:
+
+| gocd-cypress | Cypress |
+|-----|----|
+| 3.0   | 10–12 |
+| 2.2.2 | 5-10 |
 
 # Installation
 
 ```bash
-npm install -D github:adnovum/gocd-cypress#v2.2.2
+npm install -D github:adnovum/gocd-cypress#v3.0.0
 ```
 
 # Execution
@@ -20,6 +28,7 @@ npm install -D github:adnovum/gocd-cypress#v2.2.2
 ## Minimal example
 
 *`package.json`*:
+
 ```json
 {
     "scripts": {
@@ -39,10 +48,11 @@ npx gocd-cypress --help
 
 # Configuration
 
-This tool uses [Cosmiconfig](https://github.com/davidtheclark/cosmiconfig) for the configuration options, see its 
+This tool uses [Cosmiconfig](https://github.com/davidtheclark/cosmiconfig) for the configuration options, see its
 documentation about where you can define your options. The module name we use with it is `gocdCypress`.
 
 Example in `package.json`:
+
 ```json
 {
     "name": "my-project",
@@ -54,7 +64,7 @@ Example in `package.json`:
 }
 ```
 
-We also support profiles that override non-profile-specific or default values, and they can be selected with command-line 
+We also support profiles that override non-profile-specific or default values, and they can be selected with command-line
 option `--profile`:
 
 ```json
@@ -73,7 +83,7 @@ option `--profile`:
 }
 ```
 
-Environment variables can override Cosmiconfig options. Each option is mapped to an environment variable with its name 
+Environment variables can override Cosmiconfig options. Each option is mapped to an environment variable with its name
 converted to underscore case and prefixed with `CY_`. For example:
 
 ```bash

@@ -1,6 +1,6 @@
 {
 	"name": "gocd-cypress",
-	"version": "2.2.2",
+	"version": "3.0.0",
 	"description": "",
 	"bin": {
 		"gocd-cypress": "bin/gocd-cypress"
@@ -40,6 +40,6 @@
 		"typescript": "^4.8.4"
 	},
 	"peerDependencies": {
-		"cypress": ">= 5 <= 10"
+		"cypress": ">=10.0.0"
 	}
 }

@@ -7,6 +7,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        cypress-version: [^10, ^11, ^12]
+
+    name: build (Cypress ${{ matrix.cypress-version }})
+
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -14,5 +21,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - run: npm install
+      - name: Install NPM dependencies for SUT
+        run: npm install
+      - name: Install Cypress version {{ matrix.cypress-version }}
+        run: npm install cypress@${{ matrix.cypress-version }}
       - run: npm test
