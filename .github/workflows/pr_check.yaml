@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - master
+  on_dispatch:
 
 jobs:
   build:
@@ -11,8 +12,9 @@ jobs:
     strategy:
       matrix:
         cypress-version: [^10, ^11, ^12]
+        node-version: [ 16.x, 18.x]
 
-    name: build (Cypress ${{ matrix.cypress-version }})
+    name: Node ${{matrix.node-versio}} - Cypress ${{ matrix.cypress-version }}
 
     steps:
       - name: checkout
@@ -20,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: ${{matrix.node-versio}}
       - name: Install NPM dependencies
         run: npm install
       - name: Install Cypress version ${{ matrix.cypress-version }}
