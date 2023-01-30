@@ -12,10 +12,10 @@ Please make sure to install Cypress before using gocd-cypress.
 
 This tool has been tested for compatibility with the following ranges of Cypress versions:
 
-| gocd-cypress | Cypress |
-|-----|----|
-| 3.0   | 10–12 |
-| 2.2.2 | 5-10 |
+| gocd-cypress | Cypress | Node.js |
+|-----|----|----| 
+| 3.0   | 10–12 | 16 |
+| 2.2.2 | 5-10 | 16 |
 
 # Installation
 
