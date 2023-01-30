@@ -23,6 +23,6 @@ jobs:
           node-version: '16'
       - name: Install NPM dependencies
         run: npm install
-      - name: Install Cypress version {{ matrix.cypress-version }}
+      - name: Install Cypress version ${{ matrix.cypress-version }}
         run: npm install cypress@${{ matrix.cypress-version }}
       - run: npm test
