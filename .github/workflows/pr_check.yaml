@@ -14,7 +14,7 @@ jobs:
         cypress-version: [^10, ^11, ^12]
         node-version: [ 16.x, 18.x]
 
-    name: Node ${{matrix.node-versio}} - Cypress ${{ matrix.cypress-version }}
+    name: Node ${{ matrix.node-version }} - Cypress ${{ matrix.cypress-version }}
 
     steps:
       - name: checkout
@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: ${{matrix.node-versio}}
+          node-version: ${{ matrix.node-version }}
       - name: Install NPM dependencies
         run: npm install
       - name: Install Cypress version ${{ matrix.cypress-version }}
