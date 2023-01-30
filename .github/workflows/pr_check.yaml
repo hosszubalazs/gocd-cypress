@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - name: Install NPM dependencies for SUT
+      - name: Install NPM dependencies
         run: npm install
       - name: Install Cypress version {{ matrix.cypress-version }}
         run: npm install cypress@${{ matrix.cypress-version }}
