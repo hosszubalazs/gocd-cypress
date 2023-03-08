@@ -3,6 +3,7 @@
 
 Cypress runner for GoCD that:
 
+- start a local development server of your application
 - runs test in docker container when a CI environment is detected
 - creates a merged HTML report
 
@@ -48,6 +49,9 @@ npx gocd-cypress --help
 
 # Configuration
 
+You should configure the behaviour trough package.json. See all options avaialable in the [CLI builder](https://github.com/adnovum/gocd-cypress/blob/dbcdec4aad24f9637214600d3be1b58025f4e8eb/src/cli-builder.ts#L32)
+
+
 This tool uses [Cosmiconfig](https://github.com/davidtheclark/cosmiconfig) for the configuration options, see its
 documentation about where you can define your options. The module name we use with it is `gocdCypress`.
 
@@ -64,8 +68,8 @@ Example in `package.json`:
 }
 ```
 
-We also support profiles that override non-profile-specific or default values, and they can be selected with command-line
-option `--profile`:
+We also support profiles that can override any of the config values. Profiles can be selected with command-line
+option `--profile [profile-name]`:
 
 ```json
 {
