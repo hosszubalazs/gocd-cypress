@@ -1,10 +1,10 @@
 
 # gocd-cypress
 
-Cypress runner for GoCD that:
+This package supports running Cypress in GoCD by offering the following features:
 
-- start a local development server of your application
-- runs test in docker container when a CI environment is detected
+- start the local development server of your application
+- run testing in a Docker container when the `CI` environment flag is set
 - creates a merged HTML report
 
 # Prerequisites
