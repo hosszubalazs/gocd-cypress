@@ -3,8 +3,8 @@
 
 This package supports running Cypress in GoCD by offering the following features:
 
-- start the local development server of your application
 - run testing in a Docker container when the `CI` environment flag is set
+- optionally start the local development server of your application
 - creates a merged HTML report
 
 # Prerequisites
