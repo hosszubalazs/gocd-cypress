@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "//": "linking package does not work properly - recursive linking",
-    "postinstall": "npm install --no-save $(npm pack ../ | tail -1)",
+    "//": "Create a local package of gocd-cypress, and install it for testing.",
+    "postinstall": "npm-run-all localinstall:*",
+    "localinstall:pack": "npm pack ../",
+    "localinstall:install": "npm install --no-save gocd-cypress-3.0.0.tgz",
     "start": "node tools/fake-serve.js",
     "test": "gocd-cypress --serveCmd='npm start' --serveHost=http://localhost:4200"
   },
   "keywords": [],
   "devDependencies": {
-    "cypress": ">=10.0.0"
+    "cypress": ">=10.0.0",
+    "npm-run-all": "^4.1.5"
   },
   "gocdCypress": {
     "dockerImage": "cypress/browsers:node16.14.2-slim-chrome103-ff102",
