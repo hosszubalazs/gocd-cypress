@@ -5,7 +5,7 @@ This package supports running Cypress in GoCD by offering the following features
 
 - run testing in a Docker container when the `CI` environment flag is set
 - optionally start the local development server of your application
-- creates a merged HTML report
+- create a merged HTML report
 
 # Prerequisites
 
@@ -48,9 +48,6 @@ npx gocd-cypress --help
 ```
 
 # Configuration
-
-You should configure the behaviour trough package.json. See all options avaialable in the [CLI builder](https://github.com/adnovum/gocd-cypress/blob/dbcdec4aad24f9637214600d3be1b58025f4e8eb/src/cli-builder.ts#L32)
-
 
 This tool uses [Cosmiconfig](https://github.com/davidtheclark/cosmiconfig) for the configuration options, see its
 documentation about where you can define your options. The module name we use with it is `gocdCypress`.
