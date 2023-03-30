@@ -1,10 +1,11 @@
 
 # gocd-cypress
 
-Cypress runner for GoCD that:
+This package supports running Cypress in GoCD by offering the following features:
 
-- runs test in docker container when a CI environment is detected
-- creates a merged HTML report
+- run testing in a Docker container when the `CI` environment flag is set
+- optionally start the local development server of your application
+- create a merged HTML report
 
 # Prerequisites
 
@@ -64,8 +65,8 @@ Example in `package.json`:
 }
 ```
 
-We also support profiles that override non-profile-specific or default values, and they can be selected with command-line
-option `--profile`:
+We also support profiles that can override any of the config values. Profiles can be selected with command-line
+option `--profile [profile-name]`:
 
 ```json
 {
