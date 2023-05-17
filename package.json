@@ -17,6 +17,10 @@
 	"keywords": [],
 	"license": "MIT",
 	"dependencies": {
+		"@tsconfig/node14": "^1.0.3",
+        "@tsconfig/node16": "^1.0.4",
+        "@tsconfig/node18": "^2.0.1",
+        "@tsconfig/node20": "^1.0.1",
 		"chalk": "^4.1.2",
 		"cosmiconfig": "^7.0.1",
 		"execa": "^5.1.1",
