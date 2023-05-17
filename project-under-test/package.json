@@ -17,7 +17,7 @@
     "dockerImage": "cypress/browsers:node16.14.2-slim-chrome103-ff102",
     "profiles": {
       "testBootstrap": {
-        "bootstrapCmd": "echo 'This is a dummy bootstrap command'"
+        "bootstrapCmd": "node -v"
       }
     }
   }
