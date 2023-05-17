@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 let nodeJsMajorVersions = process.versions.node.split('.')[0];
-const tsNodeDir = require('path').dirname(require.resolve('@tsconfig'));
+//const tsNodeDir = require('path').dirname(require.resolve('@tsconfig'));
 
 require('ts-node').register({
 	transpileOnly: true,
 	// have proper tsconfig for current Node.js runtime
-	project: tsNodeDir + '/node' + nodeJsMajorVersions + '/tsconfig.json'
+	project:  './node_modules/@tsconfig/node' + nodeJsMajorVersions + '/tsconfig.json'
 });
 
 require('../src/index.ts');
