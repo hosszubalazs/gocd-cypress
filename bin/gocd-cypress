@@ -3,6 +3,11 @@
 const nodeJsMajorVersions = process.versions.node.split('.')[0];
 const tsNodeDir = require('path').dirname(require.resolve('ts-node/package.json'));
 
+// FIXME until ts-node is not realised, the tsconfig for node18 is not available, we default back to node16 configs https://github.com/TypeStrong/ts-node
+if (parseInt(nodeJsMajorVersions, 10) > 16) {
+  nodeJsMajorVersions = '16';
+}
+
 require('ts-node').register({
 	transpileOnly: true,
 	// have proper tsconfig for current Node.js runtime
