@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const nodeJsMajorVersions = process.versions.node.split('.')[0];
+let nodeJsMajorVersions = process.versions.node.split('.')[0];
 const tsNodeDir = require('path').dirname(require.resolve('ts-node/package.json'));
 
 // FIXME until ts-node is not realised, the tsconfig for node18 is not available, we default back to node16 configs https://github.com/TypeStrong/ts-node
