@@ -1,5 +1,5 @@
-# gocd-cypress is deprecated and not receiving new features
-If you would like to integrate Cypress testing in GoCD see the guides in the Adnovum Confluence titled "Cypress Integration Guide".
+# WARNING - gocd-cypress is deprecated and not receiving new features
+This tool is no longer used by Adnouvm.
 
 # gocd-cypress
 
