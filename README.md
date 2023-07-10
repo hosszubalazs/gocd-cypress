@@ -1,3 +1,5 @@
+# gocd-cypress is deprecated and not receiving new features
+If you would like to integrate Cypress testing in GoCD see the guides in the Adnovum Confluence titled "Cypress Integration Guide".
 
 # gocd-cypress
 
@@ -6,6 +8,7 @@ This package supports running Cypress in GoCD by offering the following features
 - run testing in a Docker container when the `CI` environment flag is set
 - optionally start the local development server of your application
 - create a merged HTML report
+
 
 # Prerequisites
 
